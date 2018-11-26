@@ -28,13 +28,13 @@
   (unique {:b 2} {:b 2 :a 1})
   => nil)
 
-^{:refer hara.data.base.map/assoc-if :added "3.0"}
+^{:refer hara.data.base.map/assoc-some :added "3.0"}
 (fact "assoc key/value pairs to the map only on non-nil values"
 
-  (assoc-if {} :a 1)
+  (assoc-some {} :a 1)
   => {:a 1}
 
-  (assoc-if {} :a 1 :b nil)
+  (assoc-some {} :a 1 :b nil)
   => {:a 1})
 
 ^{:refer hara.data.base.map/assoc-in-if :added "3.0"}

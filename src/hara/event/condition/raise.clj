@@ -52,7 +52,7 @@
         nissue (-> issue
                    (update-in [:data] merge ndata)
                    (update-in [:options] merge noptions)
-                   (map/assoc-if :default ndefault))]
+                   (map/assoc-some :default ndefault))]
     (raise-loop nissue (next managers) (merge noptmap optmap))))
 
 (defn raise-loop

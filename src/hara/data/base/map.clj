@@ -1,5 +1,8 @@
 (ns hara.data.base.map)
 
+(defn reduce-kvs [rf init kvs]
+  (reduce (fn [acc [k v]] (rf acc k v)) init (partition-all 2 kvs)))
+
 (defn dissoc-in
   "disassociates keys from a nested map. Setting `keep` to `true` will
    not remove a empty map after dissoc
@@ -45,18 +48,28 @@
           nil m1))
 
 (defn assoc-if
+  "Assoc each kv if (pred value) is true
+   (assoc-if odd? {:a 1} :b 2 :c 3)
+   => {:a 1 :c 3}"
+  ([pred m k v      ] (if (pred v) (assoc m k v) (or m {})))
+  ([pred m k v & kvs]
+   (reduce-kvs
+    (fn [m k v] (assoc-if pred m k v))
+    (assoc-if pred m k v)
+    kvs))
+
+  ([pred m kvs]
+   (apply (partial assoc-if pred m) kvs)))
+
+(def assoc-some
   "assoc key/value pairs to the map only on non-nil values
  
-   (assoc-if {} :a 1)
+   (assoc-some {} :a 1)
    => {:a 1}
  
-   (assoc-if {} :a 1 :b nil)
+   (assoc-some {} :a 1 :b nil)
    => {:a 1}"
-  {:added "3.0"}
-  ([m k v]
-   (if (not (nil? v)) (assoc m k v) m))
-  ([m k v & more]
-   (apply assoc-if (assoc-if m k v) more)))
+  (partial assoc-if some?))
 
 (defn assoc-in-if
   "assoc-in a nested key/value pair to a map only on non-nil values

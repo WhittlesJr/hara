@@ -21,7 +21,7 @@
 
  (hara.data.base.map       dissoc-in
                            unique
-                           assoc-if
+                           assoc-some
                            assoc-in-if
                            update-in-if
                            merge-if
