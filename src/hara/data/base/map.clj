@@ -116,10 +116,10 @@
 
 (defn assoc-in-some
   "assoc-in a nested key/value pair to a map only on non-nil values
- 
+
    (assoc-in-some {} [:a :b] 1)
    => {:a {:b 1}}
- 
+
    (assoc-in-some {} [:a :b] nil)
    => {}"
   {:added "3.0"}
@@ -140,10 +140,10 @@
 
 (defn update-in-some
   "update-in a nested key/value pair only if the value exists
- 
+
    (update-in-some {:a {:b 1}} [:a :b] inc)
    => {:a {:b 2}}
- 
+
    (update-in-some {} [:a :b] inc)
    => {}"
   {:added "3.0"}
@@ -155,13 +155,13 @@
 
 (defn merge-some
   "merges key/value pairs into a single map only if the value exists
- 
+
    (merge-some {:a nil :b 1})
    => {:b 1}
- 
+
    (merge-some {:a 1} {:b nil :c 2})
    => {:a 1 :c 2}
- 
+
    (merge-some {:a 1} {:b nil} {:c 2})
    => {:a 1 :c 2}"
   {:added "3.0"}
@@ -217,10 +217,10 @@
 
 (defn select-keys-some
   "selects only the non-nil key/value pairs from a map
- 
+
    (select-keys-some {:a 1 :b nil} [:a :b])
    => {:a 1}
- 
+
    (select-keys-some {:a 1 :b nil :c 2} [:a :b :c])
    => {:a 1 :c 2}"
   {:added "3.0"}
@@ -234,7 +234,7 @@
 
 (defn transform-in
   "moves values around in a map according to a table
- 
+
    (transform-in {:a 1 :b 2}
                  {[:c :d] [:a]})
    => {:b 2, :c {:d 1}}"
@@ -250,7 +250,7 @@
 
 (defn retract-in
   "reversed the changes by transform-in
- 
+
    (retract-in {:b 2, :c {:d 1}}
                {[:c :d] [:a]})
    => {:a 1 :b 2}"
@@ -266,7 +266,7 @@
 
 (defn map-keys
   "changes the keys of a map
-   
+
    (map-keys inc {0 :a 1 :b 2 :c})
    => {1 :a, 2 :b, 3 :c}"
   {:added "3.0"}
@@ -278,7 +278,7 @@
 
 (defn map-vals
   "changes the values of a map
- 
+
    (map-vals inc {:a 1 :b 2 :c 3})
    => {:a 2, :b 3, :c 4}"
   {:added "3.0"}
@@ -290,7 +290,7 @@
 
 (defn map-entries
   "manipulates a map given the function
- 
+
    (map-entries (fn [[k v]]
                   [(keyword (str v)) (name k)])
                 {:a 1 :b 2 :c 3})
@@ -302,7 +302,7 @@
 
 (defn transpose
   "sets the vals and keys and vice-versa
-   
+
    (transpose {:a 1 :b 2 :c 3})
    => {1 :a, 2 :b, 3 :c}"
   {:added "3.0"}
