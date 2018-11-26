@@ -22,11 +22,11 @@
  (hara.data.base.map       dissoc-in
                            unique
                            assoc-some
-                           assoc-in-if
-                           update-in-if
-                           merge-if
-                           into-if
-                           select-keys-if
+                           assoc-in-some
+                           update-in-some
+                           merge-some
+                           into-some
+                           select-keys-some
                            merge-nil
                            assoc-in-nil
                            transform-in

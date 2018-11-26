@@ -85,13 +85,13 @@
   ([m k v & more]
    (apply assoc-nil (assoc-nil m k v) more)))
 
-(defn assoc-in-if
+(defn assoc-in-some
   "assoc-in a nested key/value pair to a map only on non-nil values
  
-   (assoc-in-if {} [:a :b] 1)
+   (assoc-in-some {} [:a :b] 1)
    => {:a {:b 1}}
  
-   (assoc-in-if {} [:a :b] nil)
+   (assoc-in-some {} [:a :b] nil)
    => {}"
   {:added "3.0"}
   [m arr v]
@@ -109,13 +109,13 @@
   [m ks v]
   (if (not (nil? (get-in m ks))) m (assoc-in m ks v)))
 
-(defn update-in-if
+(defn update-in-some
   "update-in a nested key/value pair only if the value exists
  
-   (update-in-if {:a {:b 1}} [:a :b] inc)
+   (update-in-some {:a {:b 1}} [:a :b] inc)
    => {:a {:b 2}}
  
-   (update-in-if {} [:a :b] inc)
+   (update-in-some {} [:a :b] inc)
    => {}"
   {:added "3.0"}
   [m arr f & args]
@@ -124,16 +124,16 @@
       (assoc-in m arr (apply f v args))
       m)))
 
-(defn merge-if
+(defn merge-some
   "merges key/value pairs into a single map only if the value exists
  
-   (merge-if {:a nil :b 1})
+   (merge-some {:a nil :b 1})
    => {:b 1}
  
-   (merge-if {:a 1} {:b nil :c 2})
+   (merge-some {:a 1} {:b nil :c 2})
    => {:a 1 :c 2}
  
-   (merge-if {:a 1} {:b nil} {:c 2})
+   (merge-some {:a 1} {:b nil} {:c 2})
    => {:a 1 :c 2}"
   {:added "3.0"}
   ([] nil)
@@ -144,9 +144,9 @@
   ([m1 m2]
    (reduce (fn [i [k v]]
              (if (not (nil? v)) (assoc i k v) i))
-           (merge-if m1) m2))
+           (merge-some m1) m2))
   ([m1 m2 & more]
-   (apply merge-if (merge-if m1 m2) more)))
+   (apply merge-some (merge-some m1 m2) more)))
 
 ((defn merge-nil
    "only merge if the value in the original map is nil
@@ -168,14 +168,14 @@
    ([m1 m2 & more]
     (apply merge-nil (merge-nil m1 m2) more)))
 
-defn into-if
+(defn into-some
   "like into but filters nil values for both key/value pairs
    and sequences
  
-   (into-if [] [1 nil 2 3])
+   (into-some [] [1 nil 2 3])
    => [1 2 3]
  
-   (into-if {:a 1} {:b nil :c 2})
+   (into-some {:a 1} {:b nil :c 2})
    => {:a 1 :c 2}"
   {:added "3.0"}
   [to from]
@@ -186,13 +186,13 @@ defn into-if
               i))
           to from))
 
-(defn select-keys-if
+(defn select-keys-some
   "selects only the non-nil key/value pairs from a map
  
-   (select-keys-if {:a 1 :b nil} [:a :b])
+   (select-keys-some {:a 1 :b nil} [:a :b])
    => {:a 1}
  
-   (select-keys-if {:a 1 :b nil :c 2} [:a :b :c])
+   (select-keys-some {:a 1 :b nil :c 2} [:a :b :c])
    => {:a 1 :c 2}"
   {:added "3.0"}
   [m ks]
@@ -214,7 +214,7 @@ defn into-if
   (reduce (fn [out [to from]]
             (let [v (get-in m from)]
               (-> out
-                  (assoc-in-if to v)
+                  (assoc-in-some to v)
                   (dissoc-in from))))
           m
           rels))
@@ -230,7 +230,7 @@ defn into-if
   (reduce (fn [out [to from]]
             (let [v (get-in m to)]
               (-> out
-                  (assoc-in-if from v)
+                  (assoc-in-some from v)
                   (dissoc-in to))))
           m
           (reverse rels)))
