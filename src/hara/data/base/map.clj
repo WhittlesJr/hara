@@ -68,7 +68,10 @@
    => {:a 1}
 
    (assoc-some {} :a 1 :b nil)
-   => {:a 1}"
+   => {:a 1}
+
+  (assoc-some {:a 1} :b nil :c 3)
+  => {:a 1 :c 3}"
   (partial assoc-if some?))
 
 (defn assoc-nil

@@ -35,7 +35,10 @@
   => {:a 1}
 
   (assoc-some {} :a 1 :b nil)
-  => {:a 1})
+  => {:a 1}
+
+  (assoc-some {:a 1} :b nil :c 3)
+  => {:a 1 :c 3})
 
 ^{:refer hara.data.base.map/assoc-nil :added "3.0"}
 (fact "only assoc if the value in the original map is nil"
