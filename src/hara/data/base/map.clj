@@ -96,6 +96,24 @@
   ([m kvs]
    (apply (partial assoc-over-nil m) kvs)))
 
+(defn assoc-new
+  "assoc each kv if the original map does not contain the key
+
+   (assoc-new {:a 1} :b 2)
+   => {:a 1 :b 2}
+
+   (assoc-new {:a 1 :b nil} :a 2 :b 2 :c 3)
+   => {:a 1 :b nil :c 3}"
+  ([m k v      ] (if (contains? m k) (or m {}) (assoc m k v)))
+  ([m k v & kvs]
+   (reduce-kvs
+    (fn [m k v] (assoc-new m k v))
+    (assoc-new m k v)
+    kvs))
+
+  ([m kvs]
+   (apply (partial assoc-new m) kvs)))
+
 (defn assoc-in-some
   "assoc-in a nested key/value pair to a map only on non-nil values
  

@@ -52,6 +52,15 @@
   (assoc-over-nil {:a 1 :b nil} :a 2 :b 2)
   => {:a 1 :b 2})
 
+^{:refer hara.data.base.map/assoc-new :added "3.0.3"}
+(fact "assoc each kv if the original map does not contain the key"
+
+  (assoc-new {:a 1} :b 2)
+  => {:a 1 :b 2}
+
+  (assoc-new {:a 1 :b nil} :a 2 :b 2 :c 3)
+  => {:a 1 :b nil :c 3})
+
 ^{:refer hara.data.base.map/assoc-in-some :added "3.0"}
 (fact "assoc-in a nested key/value pair to a map only on non-nil values"
 
