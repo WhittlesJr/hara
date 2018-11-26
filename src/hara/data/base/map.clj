@@ -71,6 +71,20 @@
    => {:a 1}"
   (partial assoc-if some?))
 
+(defn assoc-nil
+  "only assoc if the value in the original map is nil
+  
+   (assoc-nil {:a 1} :b 2)
+   => {:a 1 :b 2}
+  
+   (assoc-nil {:a 1} :a 2 :b 2)
+   => {:a 1 :b 2}"
+  {:added "3.0"}
+  ([m k v]
+   (if (not (nil? (get m k))) m (assoc m k v)))
+  ([m k v & more]
+   (apply assoc-nil (assoc-nil m k v) more)))
+
 (defn assoc-in-if
   "assoc-in a nested key/value pair to a map only on non-nil values
  
@@ -82,6 +96,18 @@
   {:added "3.0"}
   [m arr v]
   (if (not (nil? v)) (assoc-in m arr v) m))
+
+(defn assoc-in-nil
+  "only assoc-in if the value in the original map is nil
+  
+   (assoc-in-nil {} [:a :b] 2)
+   => {:a {:b 2}}
+  
+   (assoc-in-nil {:a {:b 1}} [:a :b] 2)
+   => {:a {:b 1}}"
+  {:added "3.0"}
+  [m ks v]
+  (if (not (nil? (get-in m ks))) m (assoc-in m ks v)))
 
 (defn update-in-if
   "update-in a nested key/value pair only if the value exists
@@ -122,7 +148,27 @@
   ([m1 m2 & more]
    (apply merge-if (merge-if m1 m2) more)))
 
-(defn into-if
+((defn merge-nil
+   "only merge if the value in the original map is nil
+ 
+   (merge-nil {:a 1} {:b 2})
+   => {:a 1 :b 2}
+ 
+   (merge-nil {:a 1} {:a 2})
+   => {:a 1}"
+   {:added "3.0"}
+   ([] nil)
+   ([m] m)
+   ([m1 m2]
+    (reduce (fn [i [k v]]
+              (if (not (nil? (get i k)))
+                i
+                (assoc i k v)))
+            m1 m2))
+   ([m1 m2 & more]
+    (apply merge-nil (merge-nil m1 m2) more)))
+
+defn into-if
   "like into but filters nil values for both key/value pairs
    and sequences
  
@@ -156,52 +202,6 @@
                 (assoc i k v)
                 i)))
           nil ks))
-
-(defn merge-nil
-  "only merge if the value in the original map is nil
- 
-   (merge-nil {:a 1} {:b 2})
-   => {:a 1 :b 2}
- 
-   (merge-nil {:a 1} {:a 2})
-   => {:a 1}"
-  {:added "3.0"}
-  ([] nil)
-  ([m] m)
-  ([m1 m2]
-   (reduce (fn [i [k v]]
-             (if (not (nil? (get i k)))
-               i
-               (assoc i k v)))
-           m1 m2))
-  ([m1 m2 & more]
-   (apply merge-nil (merge-nil m1 m2) more)))
-
-(defn assoc-nil
-  "only assoc if the value in the original map is nil
- 
-   (assoc-nil {:a 1} :b 2)
-   => {:a 1 :b 2}
- 
-   (assoc-nil {:a 1} :a 2 :b 2)
-   => {:a 1 :b 2}"
-  {:added "3.0"}
-  ([m k v]
-   (if (not (nil? (get m k))) m (assoc m k v)))
-  ([m k v & more]
-   (apply assoc-nil (assoc-nil m k v) more)))
-
-(defn assoc-in-nil
-  "only assoc-in if the value in the original map is nil
- 
-   (assoc-in-nil {} [:a :b] 2)
-   => {:a {:b 2}}
- 
-   (assoc-in-nil {:a {:b 1}} [:a :b] 2)
-   => {:a {:b 1}}"
-  {:added "3.0"}
-  [m ks v]
-  (if (not (nil? (get-in m ks))) m (assoc-in m ks v)))
 
 (defn transform-in
   "moves values around in a map according to a table

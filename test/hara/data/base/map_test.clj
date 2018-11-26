@@ -37,6 +37,15 @@
   (assoc-some {} :a 1 :b nil)
   => {:a 1})
 
+^{:refer hara.data.base.map/assoc-nil :added "3.0"}
+(fact "only assoc if the value in the original map is nil"
+
+  (assoc-nil {:a 1} :b 2)
+  => {:a 1 :b 2}
+
+  (assoc-nil {:a 1} :a 2 :b 2)
+  => {:a 1 :b 2})
+
 ^{:refer hara.data.base.map/assoc-in-if :added "3.0"}
 (fact "assoc-in a nested key/value pair to a map only on non-nil values"
 
@@ -45,6 +54,15 @@
 
   (assoc-in-if {} [:a :b] nil)
   => {})
+
+^{:refer hara.data.base.map/assoc-in-nil :added "3.0"}
+(fact "only assoc-in if the value in the original map is nil"
+
+  (assoc-in-nil {} [:a :b] 2)
+  => {:a {:b 2}}
+
+  (assoc-in-nil {:a {:b 1}} [:a :b] 2)
+  => {:a {:b 1}})
 
 ^{:refer hara.data.base.map/update-in-if :added "3.0"}
 (fact "update-in a nested key/value pair only if the value exists"
@@ -67,6 +85,15 @@
   (merge-if {:a 1} {:b nil} {:c 2})
   => {:a 1 :c 2})
 
+^{:refer hara.data.base.map/merge-nil :added "3.0"}
+(fact "only merge if the value in the original map is nil"
+
+  (merge-nil {:a 1} {:b 2})
+  => {:a 1 :b 2}
+
+  (merge-nil {:a 1} {:a 2})
+  => {:a 1})
+
 ^{:refer hara.data.base.map/into-if :added "3.0"}
 (fact "like into but filters nil values for both key/value pairs
   and sequences"
@@ -85,33 +112,6 @@
 
   (select-keys-if {:a 1 :b nil :c 2} [:a :b :c])
   => {:a 1 :c 2})
-
-^{:refer hara.data.base.map/merge-nil :added "3.0"}
-(fact "only merge if the value in the original map is nil"
-
-  (merge-nil {:a 1} {:b 2})
-  => {:a 1 :b 2}
-
-  (merge-nil {:a 1} {:a 2})
-  => {:a 1})
-
-^{:refer hara.data.base.map/assoc-nil :added "3.0"}
-(fact "only assoc if the value in the original map is nil"
-
-  (assoc-nil {:a 1} :b 2)
-  => {:a 1 :b 2}
-
-  (assoc-nil {:a 1} :a 2 :b 2)
-  => {:a 1 :b 2})
-
-^{:refer hara.data.base.map/assoc-in-nil :added "3.0"}
-(fact "only assoc-in if the value in the original map is nil"
-
-  (assoc-in-nil {} [:a :b] 2)
-  => {:a {:b 2}}
-
-  (assoc-in-nil {:a {:b 1}} [:a :b] 2)
-  => {:a {:b 1}})
 
 ^{:refer hara.data.base.map/transform-in :added "3.0"}
 (fact "moves values around in a map according to a table"
