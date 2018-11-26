@@ -6,13 +6,13 @@
 (defn dissoc-in
   "disassociates keys from a nested map. Setting `keep` to `true` will
    not remove a empty map after dissoc
- 
+
    (dissoc-in {:a {:b 10 :c 20}} [:a :b])
    => {:a {:c 20}}
- 
+
    (dissoc-in {:a {:b 10}} [:a :b])
    => {}
- 
+
    (dissoc-in {:a {:b 10}} [:a :b] true)
    => {:a {}}"
   {:added "3.0"}
@@ -30,13 +30,13 @@
 
 (defn unique
   "returns a map of all key/value pairs that differ from a second map
- 
+
    (unique {:a 1} {:a 2})
    => {:a 1}
- 
+
    (unique {:a 1 :b 2} {:b 2})
    => {:a 1}
- 
+
    (unique {:b 2} {:b 2 :a 1})
    => nil"
   {:added "3.0"}
@@ -63,10 +63,10 @@
 
 (def assoc-some
   "assoc key/value pairs to the map only on non-nil values
- 
+
    (assoc-some {} :a 1)
    => {:a 1}
- 
+
    (assoc-some {} :a 1 :b nil)
    => {:a 1}"
   (partial assoc-if some?))
