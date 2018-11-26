@@ -52,13 +52,13 @@
                 {:a {:b {:c 3}}})
   => {:a {:b {:c 3 :d 2}}})
 
-^{:refer hara.data.base.nested/merge-nil-nested :added "3.0"}
+^{:refer hara.data.base.nested/merge-over-nil-nested :added "3.0"}
 (fact "Merges nested values from left to right, provided the merged value does not exist"
 
-  (merge-nil-nested {:a {:b 2}} {:a {:c 2}})
+  (merge-over-nil-nested {:a {:b 2}} {:a {:c 2}})
   => {:a {:b 2 :c 2}}
 
-  (merge-nil-nested {:b {:c :old}} {:b {:c :new}})
+  (merge-over-nil-nested {:b {:c :old}} {:b {:c :new}})
   => {:b {:c :old}})
 
 ^{:refer hara.data.base.nested/dissoc-nested :added "3.0"}

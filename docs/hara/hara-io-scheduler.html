@@ -164,7 +164,7 @@
      :cache     [(fn [_] (state/cache {} {:tag "scheduler.cache"}))]}
     (-> global
         (update-in [:array] nested/merge-nested config)
-        (nested/merge-nil-nested *defaults*))
+        (nested/merge-over-nil-nested *defaults*))
     {:tag "scheduler"})))</code></pre>
                     </div>
                 </div>

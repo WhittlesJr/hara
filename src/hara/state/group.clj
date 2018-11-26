@@ -103,7 +103,7 @@
    => #(-> % :tag (= :hello))"
   {:added "3.0"}
   [m]
-  (let [{:keys [constructor key items] :as m} (map/merge-nil m {:key :name
+  (let [{:keys [constructor key items] :as m} (map/merge-over-nil m {:key :name
                                                                 :constructor identity})]
     (-> (dissoc m :items)
         (append-items items)
@@ -121,7 +121,7 @@
   ([name] `(defgroup ~name {}))
   ([name m]
    `(def ~name (-> ~m
-                   (map/merge-nil {:var (var ~name)
+                   (map/merge-over-nil {:var (var ~name)
                                    :tag ~(keyword (str name))})
                    (group)))))
 

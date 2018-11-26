@@ -40,13 +40,16 @@
   (assoc-some {:a 1} :b nil :c 3)
   => {:a 1 :c 3})
 
-^{:refer hara.data.base.map/assoc-nil :added "3.0"}
-(fact "only assoc if the value in the original map is nil"
+^{:refer hara.data.base.map/assoc-over-nil :added "3.0"}
+(fact "assoc each kv if the value in the original map is nil or nonexistant"
 
-  (assoc-nil {:a 1} :b 2)
+  (assoc-over-nil {:a 1} :b 2)
   => {:a 1 :b 2}
 
-  (assoc-nil {:a 1} :a 2 :b 2)
+  (assoc-over-nil {:a 1} :a 2 :b 2)
+  => {:a 1 :b 2}
+
+  (assoc-over-nil {:a 1 :b nil} :a 2 :b 2)
   => {:a 1 :b 2})
 
 ^{:refer hara.data.base.map/assoc-in-some :added "3.0"}
@@ -58,13 +61,13 @@
   (assoc-in-some {} [:a :b] nil)
   => {})
 
-^{:refer hara.data.base.map/assoc-in-nil :added "3.0"}
+^{:refer hara.data.base.map/assoc-in-over-nil :added "3.0"}
 (fact "only assoc-in if the value in the original map is nil"
 
-  (assoc-in-nil {} [:a :b] 2)
+  (assoc-in-over-nil {} [:a :b] 2)
   => {:a {:b 2}}
 
-  (assoc-in-nil {:a {:b 1}} [:a :b] 2)
+  (assoc-in-over-nil {:a {:b 1}} [:a :b] 2)
   => {:a {:b 1}})
 
 ^{:refer hara.data.base.map/update-in-some :added "3.0"}
@@ -88,13 +91,13 @@
   (merge-some {:a 1} {:b nil} {:c 2})
   => {:a 1 :c 2})
 
-^{:refer hara.data.base.map/merge-nil :added "3.0"}
+^{:refer hara.data.base.map/merge-over-nil :added "3.0"}
 (fact "only merge if the value in the original map is nil"
 
-  (merge-nil {:a 1} {:b 2})
+  (merge-over-nil {:a 1} {:b 2})
   => {:a 1 :b 2}
 
-  (merge-nil {:a 1} {:a 2})
+  (merge-over-nil {:a 1} {:a 2})
   => {:a 1})
 
 ^{:refer hara.data.base.map/into-some :added "3.0"}

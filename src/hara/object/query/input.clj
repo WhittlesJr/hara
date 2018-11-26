@@ -98,5 +98,5 @@
   {:added "3.0"}
   [args]
   (-> (group-by args-classify args)
-      (map/update-in-if [:params] args-convert)
-      (map/update-in-if [:type] args-convert)))
+      (map/update-in-some [:params] args-convert)
+      (map/update-in-some [:type] args-convert)))

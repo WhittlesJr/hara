@@ -130,13 +130,13 @@
   ([m1 m2 & ms]
    (apply merge-nested (merge-nested m1 m2) ms)))
 
-(defn merge-nil-nested
+(defn merge-over-nil-nested
   "Merges nested values from left to right, provided the merged value does not exist
  
-   (merge-nil-nested {:a {:b 2}} {:a {:c 2}})
+   (merge-over-nil-nested {:a {:b 2}} {:a {:c 2}})
    => {:a {:b 2 :c 2}}
  
-   (merge-nil-nested {:b {:c :old}} {:b {:c :new}})
+   (merge-over-nil-nested {:b {:c :old}} {:b {:c :new}})
    => {:b {:c :old}}"
   {:added "3.0"}
   ([] nil)
@@ -148,14 +148,14 @@
                         (assoc out k v)
 
                         (and (check/hash-map? v) (check/hash-map? v1))
-                        (assoc out k (merge-nil-nested v1 v))
+                        (assoc out k (merge-over-nil-nested v1 v))
 
                         :else
                         out)))
               (or m1 {})
               m2))
   ([m1 m2 & more]
-   (apply merge-nil-nested (merge-nil-nested m1 m2) more)))
+   (apply merge-over-nil-nested (merge-over-nil-nested m1 m2) more)))
 
 (defn dissoc-nested
   "Returns `m` without all nested keys in `ks`.

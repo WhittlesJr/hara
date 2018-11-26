@@ -27,8 +27,8 @@
                            merge-some
                            into-some
                            select-keys-some
-                           merge-nil
-                           assoc-in-nil
+                           merge-over-nil
+                           assoc-in-over-nil
                            transform-in
                            retract-in
                            map-keys
@@ -41,7 +41,7 @@
                            update-keys-in
                            update-vals-in
                            merge-nested
-                           merge-nil-nested
+                           merge-over-nil-nested
                            dissoc-nested
                            unique-nested
                            clean-nested)

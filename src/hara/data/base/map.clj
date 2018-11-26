@@ -74,19 +74,27 @@
   => {:a 1 :c 3}"
   (partial assoc-if some?))
 
-(defn assoc-nil
-  "only assoc if the value in the original map is nil
+(defn assoc-over-nil
+  "assoc each kv if the value in the original map is nil or nonexistant
   
-   (assoc-nil {:a 1} :b 2)
+   (assoc-over-nil {:a 1} :b 2)
    => {:a 1 :b 2}
-  
-   (assoc-nil {:a 1} :a 2 :b 2)
+
+   (assoc-over-nil {:a 1} :a 2 :b 2)
+   => {:a 1 :b 2}
+
+   (assoc-over-nil {:a 1 :b nil} :a 2 :b 2)
    => {:a 1 :b 2}"
   {:added "3.0"}
-  ([m k v]
-   (if (not (nil? (get m k))) m (assoc m k v)))
-  ([m k v & more]
-   (apply assoc-nil (assoc-nil m k v) more)))
+  ([m k v      ] (if (some? (get m k)) (or m {}) (assoc m k v)))
+  ([m k v & kvs]
+   (reduce-kvs
+    (fn [m k v] (assoc-over-nil m k v))
+    (assoc-over-nil m k v)
+    kvs))
+
+  ([m kvs]
+   (apply (partial assoc-over-nil m) kvs)))
 
 (defn assoc-in-some
   "assoc-in a nested key/value pair to a map only on non-nil values
@@ -100,13 +108,13 @@
   [m arr v]
   (if (not (nil? v)) (assoc-in m arr v) m))
 
-(defn assoc-in-nil
+(defn assoc-in-over-nil
   "only assoc-in if the value in the original map is nil
-  
-   (assoc-in-nil {} [:a :b] 2)
+
+   (assoc-in-over-nil {} [:a :b] 2)
    => {:a {:b 2}}
-  
-   (assoc-in-nil {:a {:b 1}} [:a :b] 2)
+
+   (assoc-in-over-nil {:a {:b 1}} [:a :b] 2)
    => {:a {:b 1}}"
   {:added "3.0"}
   [m ks v]
@@ -151,33 +159,33 @@
   ([m1 m2 & more]
    (apply merge-some (merge-some m1 m2) more)))
 
-((defn merge-nil
-   "only merge if the value in the original map is nil
- 
-   (merge-nil {:a 1} {:b 2})
+(defn merge-over-nil
+  "only merge if the value in the original map is nil
+
+   (merge-over-nil {:a 1} {:b 2})
    => {:a 1 :b 2}
- 
-   (merge-nil {:a 1} {:a 2})
+
+   (merge-over-nil {:a 1} {:a 2})
    => {:a 1}"
-   {:added "3.0"}
-   ([] nil)
-   ([m] m)
-   ([m1 m2]
-    (reduce (fn [i [k v]]
-              (if (not (nil? (get i k)))
-                i
-                (assoc i k v)))
-            m1 m2))
-   ([m1 m2 & more]
-    (apply merge-nil (merge-nil m1 m2) more)))
+  {:added "3.0"}
+  ([] nil)
+  ([m] m)
+  ([m1 m2]
+   (reduce (fn [i [k v]]
+             (if (not (nil? (get i k)))
+               i
+               (assoc i k v)))
+           m1 m2))
+  ([m1 m2 & more]
+   (apply merge-over-nil (merge-over-nil m1 m2) more)))
 
 (defn into-some
   "like into but filters nil values for both key/value pairs
    and sequences
- 
+
    (into-some [] [1 nil 2 3])
    => [1 2 3]
- 
+
    (into-some {:a 1} {:b nil :c 2})
    => {:a 1 :c 2}"
   {:added "3.0"}

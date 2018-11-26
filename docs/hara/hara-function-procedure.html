@@ -146,7 +146,7 @@
 
          (check/hash-map? tk)
          (-> (assoc tk :arglist arglist)
-             (nested/merge-nil-nested +default-settings+)
+             (nested/merge-over-nil-nested +default-settings+)
              (map->Procedure)))))</code></pre>
                     </div>
                 </div>

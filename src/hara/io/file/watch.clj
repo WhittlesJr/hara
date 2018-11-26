@@ -186,7 +186,7 @@
   [paths callback options]
   (let [paths   (if (coll? paths) paths [paths])]
     (Watcher. paths callback
-              (map/merge-nil options *defaults*))))
+              (map/merge-over-nil options *defaults*))))
 
 (defn watch-callback
   "helper function to create watch callback"
